@@ -4,7 +4,9 @@ function Option({ question, dispatch, answer }) {
       {question.options.map((option, i) => (
         <button
           key={i}
-          className="btn btn-option"
+          className={`btn btn-option ${i === answer ? "answer" : ""} ${
+            i === question.correctOption ? "correct" : "wrong"
+          }`}
           onClick={() => dispatch({ type: "newAnswer", payload: i })}
         >
           {option}
