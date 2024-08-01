@@ -12,7 +12,7 @@ import Timer from "./components/Timer";
 import Footer from "./components/Footer";
 
 // import "./index.css";
-
+const TIME_PER_QUESTION = 15;
 const initialState = {
   questions: [],
   // loading, error, ready, active, finished
@@ -21,7 +21,7 @@ const initialState = {
   answer: null,
   points: 0,
   highscore: 0,
-  secondsLeft: 10,
+  secondsLeft: null,
 };
 
 function reducer(state, action) {
@@ -31,8 +31,12 @@ function reducer(state, action) {
     case "dataFailed":
       return { ...state, status: "error" };
     case "start":
-      return { ...state, status: "active" };
-    case "newAnswer":
+      return {
+        ...state,
+        status: "active",
+        secondsLeft: state.questions.length * TIME_PER_QUESTION,
+      };
+    case "newAnswer": {
       const currentQuestion = state.questions.at(state.index);
 
       return {
@@ -43,6 +47,7 @@ function reducer(state, action) {
             ? state.points + currentQuestion.points
             : state.points,
       };
+    }
     case "nextQuestion":
       return { ...state, index: state.index + 1, answer: null };
     case "finish":
